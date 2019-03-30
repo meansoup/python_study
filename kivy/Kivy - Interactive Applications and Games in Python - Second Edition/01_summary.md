@@ -3,22 +3,21 @@ kivy - interactive applications and games in python second edition
 [parctice code](https://www.packtpub.com/support)
 
 * kivy
-Android, iOS, Linux, windows, Mac OS 전부 동작
-핵심 부분을 Cython으로 구현하고 대부분의 그래픽 동작을 directly GPU와 연결하여 속도가 빠름
+Android, iOS, Linux, windows, Mac OS 전부 동작  
+핵심 부분을 Cython으로 구현하고 대부분의 그래픽 동작을 directly GPU와 연결하여 속도가 빠름  
 
 Chapter 1
 ----------
 
 ## 예제
-01_03 - 이렇게 widget을 personalize 할 수 있음. py에 해당 위젯 클래스 생성
-01_04 - 이렇게 widget을 상속하여 사용할 수 있음. MyButton@Button
-01_05 - layout 들 특성 확인 가능
-01_06 - <Layout>같은 base class로 변경사항을 전체 적용가능
-01_07 - pagelayout
-01_08 - kv 파일들을 Builder.load_file 로 사용하는 등 kv 활용
+1. 03 - 이렇게 widget을 personalize 할 수 있음. py에 해당 위젯 클래스 생성
+2. 04 - 이렇게 widget을 상속하여 사용할 수 있음. MyButton@Button
+3. 05 - layout 들 특성 확인 가능
+4. 06 - <Layout>같은 base class로 변경사항을 전체 적용가능
+5. 07 - pagelayout
+6. 08 - kv 파일들을 Builder.load_file 로 사용하는 등 kv 활용
 ----------
-
-
+ 
 * FooApp class 는 자동으로 foo.kv와 연결됨 (FooApp class를 갖는 파일 명은 상관 없음)
 
 * 개념
