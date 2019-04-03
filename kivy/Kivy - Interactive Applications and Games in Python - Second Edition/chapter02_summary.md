@@ -11,6 +11,9 @@ chapter 2
 03 - 이미지와 색상
 04 - canvas.after
 05 - 이동, 회전
+06 - comicWidget.kv: PushMatrix, PopMatrix
+  - toolbax.kv: Push/PopMatrix with canvas.after, self.x/y
+  - drawingspace.kv: default Push/PopMatrix with canvas.before
 ```
 
 개념
@@ -33,7 +36,7 @@ context instruction
 	inhefit from the CntextInstruction. 어디에, 어떻게 그릴지에 대한 것. (Color, Rotate, Translate, Scale)
 ```
 
-vertax instruction
+[vertax instruction](https://kivy.org/doc/stable/api-kivy.graphics.vertex_instructions.html)
 ----------
 ```
 Rectangle
@@ -60,8 +63,16 @@ Rotate: angle:	회전
 Translate: x: or y:	이동. 회전 상태라면, x, y의 방향이 반대가 됨
 Scale: xyz:		각 축에 대한 size를 비율로 지정
 			0.5배를 했다면, 원상복구를 위해선 2배를 해줘야 함
+PushMatrix		PushMatrix, which will save the current coordinate space context
+PopMatrix		PopMatrix, which return the context to its original state.
+			즉, 이 사이에 context instruction을 쓰면 다른애들 영향 x.
+			canvas에서 적용, canvas.after에서 해제(ex/06)
+```
+
+
 
 * Color, Rotate, Translate, Scale은 모두 설정하면 그 다음부터 coordinate space에 영향을 계속 미침.
 * 모든 적용을 회피하기 위해선 RelativeLayout 하위에서 적용하면 됨. RelativeLayout은 내부적으로 widget의 position 등을 결정하기 때문
-
-```
+* RelativeLayout은 내부에 PushMatrix, PopMatrix를 가지고 있음.
+* widget 속의 각 widget들은 각각 canvas.before, canvas, canvas.after를 가짐
+* canvas.before에는 별도의 Push/PopMatrix가 있어 여기서 구현하면 canvas 전에 cotext를 원상 복구.
