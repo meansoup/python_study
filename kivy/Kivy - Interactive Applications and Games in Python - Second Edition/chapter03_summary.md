@@ -1,44 +1,61 @@
 
-chapter 3
-==========
+# chapter 3
 
+# ì˜ˆì œ
 
-¿¹Á¦
-----------
-```
-01 - id¿Í attribute »ç¿ë°ú Â÷ÀÌ ±¸ºĞ (.kv)
-02 - touch event »ç¿ë°ú comicwidgetsÀÇ(py/kv) StickMan/DraggableWidgetsÀÇ °ü°è
-```
+1. idì™€ attribute ì‚¬ìš©ê³¼ ì°¨ì´ êµ¬ë¶„ (.kv)
+2. touch event ì‚¬ìš©ê³¼ comicwidgetsì˜(py/kv) StickMan/DraggableWidgetsì˜ ê´€ê³„
+3. localizing coordinates
+4. drawing_spaceë¡œì˜ ì ‘ê·¼ê³¼ pythonì„ importí•˜ëŠ” ìƒí™©
 
-°³³ä
-----------
-```
-id		.kv ³»¿¡¼­¸¸ Á¢±Ù °¡´ÉÇÔ
-		º¸Åë ¸Ç ¾Õ¿¡ _¸¦ ºÙÀÌÁö¸¸, ±¸ºĞÇÏ±â À§ÇÔÀÌÁö ÇÊ¼ö´Â ¾Æ´Ô
-attribute	¾î¶² widget¿¡ attribute¸¦ »ı¼ºÇÏ°í, id¸¦ ¿©±â ³Ö¾îÁÖ¸é ±× attribute·Î Á¢±Ù
-		commiccreator.kvÀÇ ToolBox¿¡¼­ drawing_space attribute´Â _drawing_space(id)¸¦ °¡Áö°í ÀÖÀ¸¸ç, python¿¡¼­ drawing_space·Î ¿©±â¿¡ Á¢±Ù °¡´É(ex/01)
-		rootµµ µ¿ÀÏ ¹æ½Ä (ex/01)
-root		base widget in the rule hierarchy
-self		current widget
-app		the instance of the application
-```
+# ê°œë…
 
-touch event
-----------
-```
-mouse, finger touch, magic pen touch·Î ³ª´®
-¾Æ·¡ touch´Â mouse, finger touch¿¡¼­ °¡´É
-on_touch_down	new touch start
-on_touch_move	the touch is moved
-on_touch_up		the touch ends
-	-> °¢ touch event´Â parameter(touch)·Î ¿©·¯ Á¤º¸¸¦ °®´Â [MotionEvent](https://kivy.org/doc/stable/api-kivy.input.motionevent.html#kivy.input.motionevent.MotionEvent)¸¦ ¹ŞÀ½
-	-> return value°¡ hierarchy ±¸Á¶»ó parent¿¡°Ô touch event¸¦ ½Å°æ ½á¾ß ÇÏ´Â°¡/¾Æ´Ñ°¡¸¦ ¾Ë·ÁÁÖ´Â ¿ªÇÒ(ex/02 - comicwidgets.py)
-	-> À¯»çÇÏ°Ô super.on_touch_~ À¸·Î chidrenÀÇ event¸¦ ½Å°æ¾µ ¼ö ÀÖÀ½
+* **id**
+  * .kv ë‚´ì—ì„œë§Œ ì ‘ê·¼ ê°€ëŠ¥í•¨
+  * ë³´í†µ ë§¨ ì•ì— _ë¥¼ ë¶™ì´ì§€ë§Œ, êµ¬ë¶„í•˜ê¸° ìœ„í•¨ì´ì§€ í•„ìˆ˜ëŠ” ì•„ë‹˜
+* **attribute**
+  * ì–´ë–¤ widgetì— attributeë¥¼ ìƒì„±í•˜ê³ , idë¥¼ ì—¬ê¸° ë„£ì–´ì£¼ë©´ ê·¸ attributeë¡œ ì ‘ê·¼
+  * commiccreator.kvì˜ ToolBoxì—ì„œ drawing_space attributeëŠ” _drawing_space(id)ë¥¼ ê°€ì§€ê³  ìˆìœ¼ë©°, pythonì—ì„œ drawing_spaceë¡œ ì—¬ê¸°ì— ì ‘ê·¼ ê°€ëŠ¥(ex/01)
+  * rootë„ ë™ì¼ ë°©ì‹ (ex/01)
+* **root**: base widget in the rule hierarchy
+* **self**: current widget
+* **app**: the instance of the application
 
-collide_point		¸ğµç widgetÀÌ app(coordinate space)¿¡¼­ ¹ß»ıÇÏ´Â touch event(MotionEvent)¸¦ ¹ŞÁö¸¸, ±× event°¡ Æ¯Á¤ widget¿¡¼­ ¹ß»ıÇÏ´ÂÁö È®ÀÎÇÏ´Â º¸ÆíÀûÀÎ ¹æ¹ı(ex/02 - comicwidgets.py)
-```
+## Touch event
 
-* (ex/02) self.selected¿¡ Line instance¸¦ ³Ö¾î¼­ »èÁ¦ÇÒ ¼ö ÀÖ°Ô ±¸ÇöÇÑ ºÎºĞ È®ÀÎ
-* ```self.canvas```¸¦ ÅëÇØ canvas¿¡ instructions¸¦ ³ÖÀ» ¼ö ÀÖÀ½
-* ```self.canvas.remove(self.selected)```¸¦ ÅëÇØ canvas¿¡ self.selected¸¦ Áö¿ï ¼ö ÀÖÀ½
-* left corner¸¦ ¹ş¾î³ªÁö ¾Ê°Ô, ```(touch.x - self.width/2, touch.y - self.height/2)```
+touch eventëŠ” mouse, finger touch, magic pen touchìœ¼ë¡œ ë‚˜ë‰˜ë©°, ì•„ë˜ eventëŠ” mouse, finger touchì—ì„œ ì‚¬ìš© ê°€ëŠ¥í•˜ë‹¤.
+  
+* **on_touch_down**: new touch start
+* **on_touch_move**: the touch is moved
+* **on_touch_up**: the touch ends
+  * ê° touch eventëŠ” parameter(touch)ë¡œ ì—¬ëŸ¬ ì •ë³´ë¥¼ ê°–ëŠ” [MotionEvent](https://kivy.org/doc/stable/api-kivy.input.motionevent.html#kivy.input.motionevent.MotionEvent)ë¥¼ ë°›ìŒ
+  * return valueê°€ hierarchy êµ¬ì¡°ìƒ parentì—ê²Œ touch eventë¥¼ ì‹ ê²½ ì¨ì•¼ í•˜ëŠ”ê°€/ì•„ë‹Œê°€ë¥¼ ì•Œë ¤ì£¼ëŠ” ì—­í• (ex/02 - comicwidgets.py)
+  * ìœ ì‚¬í•˜ê²Œ super.on_touch_~ ìœ¼ë¡œ chidrenì˜ eventë¥¼ ì‹ ê²½ì“¸ ìˆ˜ ìˆìŒ
+
+* **collide_point**ëŠ” ëª¨ë“  widgetì´ app(coordinate space)ì—ì„œ ë°œìƒí•˜ëŠ” touch event(MotionEvent)ë¥¼ ë°›ì§€ë§Œ, ê·¸ eventê°€ íŠ¹ì • widgetì—ì„œ ë°œìƒí•˜ëŠ”ì§€ í™•ì¸í•˜ëŠ” ë³´í¸ì ì¸ ë°©ë²•(ex/02 - comicwidgets.py)
+
+## dynamic create/deleate canvas
+
+* ```self.selected```ì— Line instanceë¥¼ ë„£ì–´ì„œ ì‚­ì œí•  ìˆ˜ ìˆê²Œ êµ¬í˜„í•œ ë¶€ë¶„ í™•ì¸ (ex/02)
+* ```with self.canvas```ë¥¼ í†µí•´ canvasì— instructionsë¥¼ ë„£ì„ ìˆ˜ ìˆìŒ
+* ```self.canvas.remove(self.selected)```ë¥¼ í†µí•´ canvasì— self.selectedë¥¼ ì§€ìš¸ ìˆ˜ ìˆìŒ
+* to_parentë¡œ ë¶€ëª¨ì˜ coordinateì— ì ‘ê·¼
+  * DraggableWidgetì˜ parent(drawing space)ì˜ ë²”ìœ„ ì¡°ê±´ ì²´í¬ë¥¼ ìœ„í•´ ì‚¬ìš©(ex/02 - comicwidgets.py)
+* left cornerë¥¼ ë²—ì–´ë‚˜ì§€ ì•Šê²Œ, ```(touch.x - self.width/2, touch.y - self.height/2)```
+
+## localizing coordinates
+
+to_parent ê°™ì´, í˜„ì¬ widgetì—ì„œ êµ¬í˜„í•˜ì§€ë§Œ, ì›€ì§ì¼ ê³µê°„ì´ parent, í˜¹ì€ parent's parentì™€ ê°™ì€ ê²½ìš° coordinatesì˜ ë²”ìœ„ë¥¼ ì§€ì •í•´ì£¼ëŠ” ê²ƒ.  
+RelativeLayoutì€ coordinateì˜ ìœ„ì¹˜ ê°’ë“¤ì´ ë‹¤ ë‹¤ë¥´ë‹ˆê¹Œ.  
+RelativeLayoutì´ ì•„ë‹Œ layoutë“¤ì€ ê·¸ ìƒìœ„ì— ëŒ€í•´ ì ˆëŒ€ì ì¸ coordinate ê°’ì„ ê°€ì§€ê³  ìˆìŒ.
+
+* **to_parent()**: transform relative coordinates inside RelativeLayout to the parent of RelativeLayout
+* **to_local()**: transform the coordinates of parent of RelativeLayout to RelativeLayout
+* **to_window()**: transform the coordinates of the current widget to absolute coordinate with respect to the window
+* **to_widget()**: transform the absolute coordinates to coordinates within the parent of the current widget
+
+* ```self.parent.drawing_space```ë¥¼ í†µí•´ ToolButtonì—ì„œ parent(ToolBox)ì˜ drawing_space attributeì— ì ‘ê·¼ (ex/04)
+* ```add_widget()```ìœ¼ë¡œ layoutì— widgetì„ ë”í•´ì¤Œ (ex/04 - toolbox.py)
+* [```#:import toolbox toolbox```](https://kivy.org/doc/stable/guide/lang.html#special-syntaxes)ìœ¼ë¡œ toolboxë¥¼ .kvì— import í•¨. (ex/04)
+  * comiccreator.pyì—ì„œ comiccreator.kvë¥¼ ì‚¬ìš©í•˜ê³ (kvì—ì„œ ìë™ìœ¼ë¡œ), commiccreatorëŠ” toolbox.kvë¥¼ ì‚¬ìš©í•˜ë¯€ë¡œ(ë‚´ë¶€ì ìœ¼ë¡œ ì‚¬ìš©í•˜ë©°, .pyì—ì„œ Builder.load_fileë¡œ load), toolbox.pyëŠ” ìë™ìœ¼ë¡œ í˜¸ì¶œë˜ì§€ ì•Šì•„, import í•„ìš”.  
+  ì¦‰, toolbox.pyê°€ mainì´ì—ˆë‹¤ë©´ importë¥¼ ì•ˆí•´ë„ .kvë¥¼ ê°€ì ¸ê°”ê² ì§€ë§Œ, toolboxê°€ mainì´ ì•„ë‹ˆë¼ ì‚¬ìš©ë˜ëŠ” ìƒí™©ì—ì„œ, .pyë¥¼ import í•´ì¤˜ì•¼ í–ˆìŒ.
