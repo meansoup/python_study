@@ -7,6 +7,7 @@
 2. touch event 사용과 comicwidgets의(py/kv) StickMan/DraggableWidgets의 관계
 3. localizing coordinates
 4. drawing_space로의 접근과 python을 import하는 상황
+5. bind/unbind, widget 생성을 drawingSpace가 아니라 widget에 하기 위해 to_local을 사용하는 것
 
 # 개념
 
@@ -59,3 +60,44 @@ RelativeLayout이 아닌 layout들은 그 상위에 대해 절대적인 coordina
 * [```#:import toolbox toolbox```](https://kivy.org/doc/stable/guide/lang.html#special-syntaxes)으로 toolbox를 .kv에 import 함. (ex/04)
   * comiccreator.py에서 comiccreator.kv를 사용하고(kv에서 자동으로), commiccreator는 toolbox.kv를 사용하므로(내부적으로 사용하며, .py에서 Builder.load_file로 load), toolbox.py는 자동으로 호출되지 않아, import 필요.  
   즉, toolbox.py가 main이었다면 import를 안해도 .kv를 가져갔겠지만, toolbox가 main이 아니라 사용되는 상황에서, .py를 import 해줘야 했음.
+
+## bind/unbind
+
+binding의 2가지 방법
+1. at .py, it works for every instance about this class  
+    touch_down의 경우 overriding하여 사용하고, 나머지에 대해 bind 함.  
+    we didn't want the ```on_touch_move```, ```on_touch_up``` events active all the time.  
+    move와 up은 touch_down이 발생한 이후에 발생할 수 있으므로, 이 이벤트들을 항상 active 상태에 두는 것이 아니라, touch_down시에 bind를 통해 관리하도록 하는 것. (ex/05 - toolbox.py)
+
+    * [```#:import toolbox toolbox```](https://kivy.org/doc/stable/guide/lang.html#special-syntaxes)으로 toolbox를 .kv에 import 함. (ex/05)
+        1. ```ToolCircle(toolbox.kv)``` mapping with ```ToolCircle(toolbox.py)``` by ```Builder.load_file('toolbox.kv')```
+        2. ```ToolCircle(toolbox.py)``` extends ```ToolFigure(ToolButton)``` in python
+        3. ```ToolButton(toolbox.py)``` mapping with ```ToolButton(toolbox.kv)```
+        4. for use ToolCircle with full operation(py/kv) it needs to import py at kv
+    * ```widget.canvas.add```의 사용과 함께, widgetize, end_figure에서 그리는 방법 (ex/05)
+
+2. at .kv, it works only for this instance  
+    특정 instance에 대해 bind하기 때문에 collide_point를 사용할 필요가 없음.
+
+    * **Button**: ```on_press:```와 ```on_release:``` (ex/06 - generaloptions.kv)
+    * **ToggleButton**: ```on_state``` - .py에서 'down', 'normal'로 구분
+
+* ```clear_widgets()```: 모든 widget을 지움 (ex/06 - generaloptions.py)
+* ```remove_widget(x.children[0])```: 가장 최근에 추가된 widget을 지움
+
+
+## Kivy property
+
+property가 정의되면 Kivy는 내부적으로 property와 연관된 event를 생성하고, 이 event는 'on_**property_name**' method와 연결됨. (ex/06 - generaloptions.py)  
+python property와 혼동해서는 안됨.  
+
+* **attribute**: used to describe variables(references, objects, instances) that belongs to class
+  *  Kivy Property는 항상 attribute, attribute가 모두 Kivy Property는 아님
+
+Kivy property
+  * NumericProperty
+  * StringProperty
+  * ListProperty
+  * DictProperty
+  * ObjectProperty
+  * StringProperty

@@ -3,76 +3,76 @@ chapter 2
 ==========
 
 
-¿¹Á¦
+ì˜ˆì œ
 ----------
 ```
-01 - canvas ±×¸®´Â ¹æ¹ı¿¡ ´ëÇÑ ¿¹Á¦(Triangle ~ Mesh)
-02 - lineÀ» ¿ø, »ï°¢Çü, »ç°¢Çü µîÀ¸·Î ±×¸®´Â ¿¹Á¦
-03 - ÀÌ¹ÌÁö¿Í »ö»ó
+01 - canvas ê·¸ë¦¬ëŠ” ë°©ë²•ì— ëŒ€í•œ ì˜ˆì œ(Triangle ~ Mesh)
+02 - lineì„ ì›, ì‚¼ê°í˜•, ì‚¬ê°í˜• ë“±ìœ¼ë¡œ ê·¸ë¦¬ëŠ” ì˜ˆì œ
+03 - ì´ë¯¸ì§€ì™€ ìƒ‰ìƒ
 04 - canvas.after
-05 - ÀÌµ¿, È¸Àü
+05 - ì´ë™, íšŒì „
 06 - comicWidget.kv: PushMatrix, PopMatrix
   - toolbax.kv: Push/PopMatrix with canvas.after, self.x/y
   - drawingspace.kv: default Push/PopMatrix with canvas.before
 ```
 
-°³³ä
+ê°œë…
 ----------
 ```
-coordinate space ´Â Á¦ÇÑµÇÁö ¾ÊÀ¸¸ç, bottom-left corner of the screeonÀ» originÀ¸·Î ÇÔ
+coordinate space ëŠ” ì œí•œë˜ì§€ ì•Šìœ¼ë©°, bottom-left corner of the screeonì„ originìœ¼ë¡œ í•¨
 
-canvas	widget¿¡ vector shape¸¦ ±×¸± ¼ö ÀÖÀ½
-		canvas¿¡ ±×¸®´Â°Ô ¾Æ´Ï¶ó, canvas´Â coordinate space¿¡ ±×¸®´Â ¸í·ÉµéÀÇ ÁıÇÕ
-		¸ğµç widgetÀº °¢°¢ Canvas¸¦ Æ÷ÇÔ.
-		¸ğµç widgetÀº µ¿ÀÏÇÑ coordiante space¸¦ °øÀ¯
-		coordiante space´Â windows³ª screen size¿¡ Á¦ÇÑµÇÁö ¾ÊÀ½
+canvas	widgetì— vector shapeë¥¼ ê·¸ë¦´ ìˆ˜ ìˆìŒ
+		canvasì— ê·¸ë¦¬ëŠ”ê²Œ ì•„ë‹ˆë¼, canvasëŠ” coordinate spaceì— ê·¸ë¦¬ëŠ” ëª…ë ¹ë“¤ì˜ ì§‘í•©
+		ëª¨ë“  widgetì€ ê°ê° Canvasë¥¼ í¬í•¨.
+		ëª¨ë“  widgetì€ ë™ì¼í•œ coordiante spaceë¥¼ ê³µìœ 
+		coordiante spaceëŠ” windowsë‚˜ screen sizeì— ì œí•œë˜ì§€ ì•ŠìŒ
 
-canvas´Â canvas.before, canvas, canvas.afterÀÇ ¼¼ °´Ã¼¸¦ °¡Áü. canvas.after´Â °¡Àå ¸¶Áö¸·¿¡ È£ÃâµÇ¾î ´Ù¸¥ widgetµé À§¿¡ »ı¼ºµÊ.(ex/04)
+canvasëŠ” canvas.before, canvas, canvas.afterì˜ ì„¸ ê°ì²´ë¥¼ ê°€ì§. canvas.afterëŠ” ê°€ì¥ ë§ˆì§€ë§‰ì— í˜¸ì¶œë˜ì–´ ë‹¤ë¥¸ widgetë“¤ ìœ„ì— ìƒì„±ë¨.(ex/04)
 
 vertax instruction
-	inherit from the VertexInstruction. ¾î¶²°É ±×¸± °ÇÁö¿¡ ´ëÇÑ °Í.
-	VertexInstructionÀ» »ó¼ÓÇÏ±â ¶§¹®¿¡ pos, size°¡ Widget°Å¶û ´Ù¸§. fixed value¸¦ ½á¾ßÇÔ
+	inherit from the VertexInstruction. ì–´ë–¤ê±¸ ê·¸ë¦´ ê±´ì§€ì— ëŒ€í•œ ê²ƒ.
+	VertexInstructionì„ ìƒì†í•˜ê¸° ë•Œë¬¸ì— pos, sizeê°€ Widgetê±°ë‘ ë‹¤ë¦„. fixed valueë¥¼ ì¨ì•¼í•¨
 context instruction
-	inhefit from the CntextInstruction. ¾îµğ¿¡, ¾î¶»°Ô ±×¸±Áö¿¡ ´ëÇÑ °Í. (Color, Rotate, Translate, Scale)
+	inhefit from the CntextInstruction. ì–´ë””ì—, ì–´ë–»ê²Œ ê·¸ë¦´ì§€ì— ëŒ€í•œ ê²ƒ. (Color, Rotate, Translate, Scale)
 ```
 
 [vertax instruction](https://kivy.org/doc/stable/api-kivy.graphics.vertex_instructions.html)
 ----------
 ```
 Rectangle
-Ellipse		ºÎÃ¤²Ã °°Àº °Í. 0µµ°¡ 12½Ã
-		angle_start, angle_end ·Î ºÎÃ¤²ÃÀ» ±×¸± ¼ö ÀÖÀ½
-		segments ´Â ¸î °³ÀÇ ¼±À¸·Î ¿øÀ» ±×¸®´ÂÁö¿¡ ´ëÇÑ °Í. ¹«Á¦ÇÑÀÇ ¼±À¸·Î ¿øÀ» ±×·Á¾ß Á¤È®ÇÑ ¿øÀÌ°ÚÁö¸¸, default=180, segments : 3À¸·Î ÇÏ¸é »ï°¢Çü(ex/01)
-Triangle	x,y points 3°³ -> »ï°¢Çü
-Quad		points 4°³ -> »ç°¢Çü
-Line		points 2°³ -> ¼± (2°³¾¿ ¿©·¯ °³·Î ¿©·¯ ¼± ±×¸± ¼ö ÀÖÀ½)
-Point		points 1°³ -> Á¡ (¿©·¯ °³·Î ¿©·¯ Á¡ ÂïÀ» ¼ö ÀÖÀ½ ex/01)
-Bezier		°î¼±. points¸¦ attractors·Î »ç¿ë. (math formalism.. ¼öÇĞÀû)
-		dash_length ´Â Á¡¼±ÀÇ ±æÀÌ, dash_offset Àº Á¡¼± »çÀÌÀÇ °Å¸®
-Mesh		»ï°¢ÇüÀÇ Á¶ÇÕÀ¸·Î ÀÌ·ç¾îÁö¸ç, ±²ÀåÈ÷ ¼öÇĞÀû
+Ellipse		ë¶€ì±„ê¼´ ê°™ì€ ê²ƒ. 0ë„ê°€ 12ì‹œ
+		angle_start, angle_end ë¡œ ë¶€ì±„ê¼´ì„ ê·¸ë¦´ ìˆ˜ ìˆìŒ
+		segments ëŠ” ëª‡ ê°œì˜ ì„ ìœ¼ë¡œ ì›ì„ ê·¸ë¦¬ëŠ”ì§€ì— ëŒ€í•œ ê²ƒ. ë¬´ì œí•œì˜ ì„ ìœ¼ë¡œ ì›ì„ ê·¸ë ¤ì•¼ ì •í™•í•œ ì›ì´ê² ì§€ë§Œ, default=180, segments : 3ìœ¼ë¡œ í•˜ë©´ ì‚¼ê°í˜•(ex/01)
+Triangle	x,y points 3ê°œ -> ì‚¼ê°í˜•
+Quad		points 4ê°œ -> ì‚¬ê°í˜•
+Line		points 2ê°œ -> ì„  (2ê°œì”© ì—¬ëŸ¬ ê°œë¡œ ì—¬ëŸ¬ ì„  ê·¸ë¦´ ìˆ˜ ìˆìŒ)
+Point		points 1ê°œ -> ì  (ì—¬ëŸ¬ ê°œë¡œ ì—¬ëŸ¬ ì  ì°ì„ ìˆ˜ ìˆìŒ ex/01)
+Bezier		ê³¡ì„ . pointsë¥¼ attractorsë¡œ ì‚¬ìš©. (math formalism.. ìˆ˜í•™ì )
+		dash_length ëŠ” ì ì„ ì˜ ê¸¸ì´, dash_offset ì€ ì ì„  ì‚¬ì´ì˜ ê±°ë¦¬
+Mesh		ì‚¼ê°í˜•ì˜ ì¡°í•©ìœ¼ë¡œ ì´ë£¨ì–´ì§€ë©°, êµ‰ì¥íˆ ìˆ˜í•™ì 
 ```
 
 context instruction
 ----------
 ```
-source: 'kivy.png'	ÀÌ¹ÌÁö¸¦ ³ÖÀ» ¼ö ÀÖÀ½
-Color: rgba:		color ¼³Á¤ °¡´É
-			ÀÌ¹ÌÁö°¡ ÀÖ´Ù°í ÇØµµ, ÀÌ¹ÌÁö°¡ ÇØ´ç ÄÃ·¯¸¦ °®°Ô µÊ(ex/03)
-Rotate: angle:	È¸Àü
-           axis:		¾î¶² ÃàÀ¸·Î ÇÒÁö ÃàÀ» ÁöÁ¤(ex/05)
-Translate: x: or y:	ÀÌµ¿. È¸Àü »óÅÂ¶ó¸é, x, yÀÇ ¹æÇâÀÌ ¹İ´ë°¡ µÊ
-Scale: xyz:		°¢ Ãà¿¡ ´ëÇÑ size¸¦ ºñÀ²·Î ÁöÁ¤
-			0.5¹è¸¦ Çß´Ù¸é, ¿ø»óº¹±¸¸¦ À§ÇØ¼± 2¹è¸¦ ÇØÁà¾ß ÇÔ
+source: 'kivy.png'	ì´ë¯¸ì§€ë¥¼ ë„£ì„ ìˆ˜ ìˆìŒ
+Color: rgba:		color ì„¤ì • ê°€ëŠ¥
+			ì´ë¯¸ì§€ê°€ ìˆë‹¤ê³  í•´ë„, ì´ë¯¸ì§€ê°€ í•´ë‹¹ ì»¬ëŸ¬ë¥¼ ê°–ê²Œ ë¨(ex/03)
+Rotate: angle:	íšŒì „
+           axis:		ì–´ë–¤ ì¶•ìœ¼ë¡œ í• ì§€ ì¶•ì„ ì§€ì •(ex/05)
+Translate: x: or y:	ì´ë™. íšŒì „ ìƒíƒœë¼ë©´, x, yì˜ ë°©í–¥ì´ ë°˜ëŒ€ê°€ ë¨
+Scale: xyz:		ê° ì¶•ì— ëŒ€í•œ sizeë¥¼ ë¹„ìœ¨ë¡œ ì§€ì •
+			0.5ë°°ë¥¼ í–ˆë‹¤ë©´, ì›ìƒë³µêµ¬ë¥¼ ìœ„í•´ì„  2ë°°ë¥¼ í•´ì¤˜ì•¼ í•¨
 PushMatrix		PushMatrix, which will save the current coordinate space context
 PopMatrix		PopMatrix, which return the context to its original state.
-			Áï, ÀÌ »çÀÌ¿¡ context instructionÀ» ¾²¸é ´Ù¸¥¾Öµé ¿µÇâ x.
-			canvas¿¡¼­ Àû¿ë, canvas.after¿¡¼­ ÇØÁ¦(ex/06)
+			ì¦‰, ì´ ì‚¬ì´ì— context instructionì„ ì“°ë©´ ë‹¤ë¥¸ì• ë“¤ ì˜í–¥ x.
+			canvasì—ì„œ ì ìš©, canvas.afterì—ì„œ í•´ì œ(ex/06)
 ```
 
 
 
-* Color, Rotate, Translate, ScaleÀº ¸ğµÎ ¼³Á¤ÇÏ¸é ±× ´ÙÀ½ºÎÅÍ coordinate space¿¡ ¿µÇâÀ» °è¼Ó ¹ÌÄ§.
-* ¸ğµç Àû¿ëÀ» È¸ÇÇÇÏ±â À§ÇØ¼± RelativeLayout ÇÏÀ§¿¡¼­ Àû¿ëÇÏ¸é µÊ. RelativeLayoutÀº ³»ºÎÀûÀ¸·Î widgetÀÇ position µîÀ» °áÁ¤ÇÏ±â ¶§¹®
-* RelativeLayoutÀº ³»ºÎ¿¡ PushMatrix, PopMatrix¸¦ °¡Áö°í ÀÖÀ½.
-* widget ¼ÓÀÇ °¢ widgetµéÀº °¢°¢ canvas.before, canvas, canvas.after¸¦ °¡Áü
-* canvas.before¿¡´Â º°µµÀÇ Push/PopMatrix°¡ ÀÖ¾î ¿©±â¼­ ±¸ÇöÇÏ¸é canvas Àü¿¡ cotext¸¦ ¿ø»ó º¹±¸.
+* Color, Rotate, Translate, Scaleì€ ëª¨ë‘ ì„¤ì •í•˜ë©´ ê·¸ ë‹¤ìŒë¶€í„° coordinate spaceì— ì˜í–¥ì„ ê³„ì† ë¯¸ì¹¨.
+* ëª¨ë“  ì ìš©ì„ íšŒí”¼í•˜ê¸° ìœ„í•´ì„  RelativeLayout í•˜ìœ„ì—ì„œ ì ìš©í•˜ë©´ ë¨. RelativeLayoutì€ ë‚´ë¶€ì ìœ¼ë¡œ widgetì˜ position ë“±ì„ ê²°ì •í•˜ê¸° ë•Œë¬¸
+* RelativeLayoutì€ ë‚´ë¶€ì— PushMatrix, PopMatrixë¥¼ ê°€ì§€ê³  ìˆìŒ.
+* widget ì†ì˜ ê° widgetë“¤ì€ ê°ê° canvas.before, canvas, canvas.afterë¥¼ ê°€ì§
+* canvas.beforeì—ëŠ” ë³„ë„ì˜ Push/PopMatrixê°€ ìˆì–´ ì—¬ê¸°ì„œ êµ¬í˜„í•˜ë©´ canvas ì „ì— cotextë¥¼ ì›ìƒ ë³µêµ¬.
