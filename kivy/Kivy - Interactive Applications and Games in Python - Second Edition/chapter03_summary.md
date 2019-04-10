@@ -107,17 +107,17 @@ property가 정의되면 Kivy는 내부적으로 property와 연관된 event를 
   * `__init__` 안에서 선언되는 것들은 instance 임.
     * `self.selected` is not shared (ex/06 - comicwidgets.py)  
 
-Kivy property
-  * **BoundedNumericProperty**: set the maximum and minimum values
-  * **AliasProperty**: extend the properties, create our own properties
-  * NumericProperty
-  * StringProperty
-  * ListProperty
-  * DictProperty
-  * ObjectProperty
-  * StringProperty
+  Kivy property
+    * **BoundedNumericProperty**: set the maximum and minimum values
+    * **AliasProperty**: extend the properties, create our own properties
+    * NumericProperty
+    * StringProperty
+    * ListProperty
+    * DictProperty
+    * ObjectProperty
+    * StringProperty
 
-* 바로바로 다른 widget의 값을 변하시키는 심층 활용 (ex/08)
+* 바로바로 다른 widget의 값을 변화시키는 심층 활용 (ex/08)
   1. drawingspace.py에서 `status_bar.counter` 변경
   2. statusbar.py의 `counter`변경 및 `on_counter` 호출
   3. statusbar.kv의 `root.counter`의 변경 및 `on_counter`에 의한 `msg_label`변경
