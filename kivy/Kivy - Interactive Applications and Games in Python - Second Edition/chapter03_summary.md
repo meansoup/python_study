@@ -8,6 +8,9 @@
 3. localizing coordinates
 4. drawing_space로의 접근과 python을 import하는 상황
 5. bind/unbind, widget 생성을 drawingSpace가 아니라 widget에 하기 위해 to_local을 사용하는 것
+6. bind on .kv
+7. kivy properties
+8. kivy properties advanced, root 주의
 
 # 개념
 
@@ -86,18 +89,38 @@ binding의 2가지 방법
 * ```remove_widget(x.children[0])```: 가장 최근에 추가된 widget을 지움
 
 
-## Kivy property
+## [Kivy property](https://kivy.org/doc/stable/api-kivy.properties.html)
 
 property가 정의되면 Kivy는 내부적으로 property와 연관된 event를 생성하고, 이 event는 'on_**property_name**' method와 연결됨. (ex/06 - generaloptions.py)  
-python property와 혼동해서는 안됨.  
+따라서, property에 값을 넣어주면 on_**property** 가 자동으로 실행 됨.
+  *  comicwidgets.py의 ```on_touch_move()```에서 generalOptions의 ```translation =```를 통해 generalOptions.py의 ```translation```에 값을 넣고 이 property는 ```on_translation()```를 trigger함.
+    * traslation의 사용과, on_translation이 child에 매개변수로 넘겨주는 값들 주의(ex/07)
 
+* ```center_x```도 property를 내부적으로 사용하는 것.
+* .kv의 vertex instruction의 attribute도 내부적으로 property로 사용 됨.
+* python property와 혼동해서는 안됨.  
 * **attribute**: used to describe variables(references, objects, instances) that belongs to class
-  *  Kivy Property는 항상 attribute, attribute가 모두 Kivy Property는 아님
+  * Kivy Property는 항상 attribute, attribute가 모두 Kivy Property는 아님
+* kivy property는 static attribute로 선언되나, internally transformed to attribute instansces.
+  * `counter`는 static하게 선언되나 attribute instances가 되고, `previous_counter`는 static attribute로 되어 all StatusBar가 share.. (ex/07 - statusbar.py)
+    * class name이나 `__class__`로 바로 접근 가능 (ex/07 - statusbar.py)
+  * `__init__` 안에서 선언되는 것들은 instance 임.
+    * `self.selected` is not shared (ex/06 - comicwidgets.py)  
 
 Kivy property
+  * **BoundedNumericProperty**: set the maximum and minimum values
+  * **AliasProperty**: extend the properties, create our own properties
   * NumericProperty
   * StringProperty
   * ListProperty
   * DictProperty
   * ObjectProperty
   * StringProperty
+
+* 바로바로 다른 widget의 값을 변하시키는 심층 활용 (ex/08)
+  1. drawingspace.py에서 `status_bar.counter` 변경
+  2. statusbar.py의 `counter`변경 및 `on_counter` 호출
+  3. statusbar.kv의 `root.counter`의 변경 및 `on_counter`에 의한 `msg_label`변경
+    * 외부 widget에서의 변경 확인
+    * .kv에서 root는 해당 .kv 파일에서의 최상위 hierarchy를 가리키는 것으로 보임
+      * `root.counter`가 comiccreator를 가리키지 않고 statusbar를 가리키며, `self.counter`는 Label을 가리키는 것으로 보임 
