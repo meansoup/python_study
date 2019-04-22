@@ -6,6 +6,8 @@
 1. Screen과 ScreenManager의 사용
 2. color가 하위에까지 영향을 미치는 것
 3. color를 동적으로 setting
+4. stencilView
+5. scatter
 
 # 개념
 
@@ -55,4 +57,23 @@ multiple screen을 갖도록 해주며 screen간 switch를 쉽게 해준다.
    * `on_touch_down`을 보면, toolbox.py의 `ToolButton`에 정의되어 있지만, collide_point로 가리키고 있는 범위는 drawingspace이기 때문이다.  
    혼동되었던 개념인데, 관련한 touch event를 해당 클래스 함수에서 전 범위에 관해 정의하고 있다고 생각하면 될 것 같다.
 
-   
+  `StencilView`에서는 특성상 코드가 이전과 변경됨.  
+   * `on_touch_down`에서 collide_point을 drawingspace에서 했었으나, drawingspace는 StencilView로 ReleativeLayout이 아니므로, .parent.collide_point를 사용하여 위치를 확정한다.  (ex/04 - toolbox.py)  
+     `update_figure`에서 더이상 collide_point를 고려하지 않는데, StemcilView가 이런 역할들을 하기 때문.  
+     `update_figure`, `end_figure`에서 to_widget을 사용하지 않는데, 이미 RelativeLayout인 parent로부터 coordiantes를 받았기 때문. (어렵다.. diff 로 확인)
+
+## scatter
+  scale, rotate와 같은 기능들을 가지고 있는 class. 두 손가락으로 scale과 rotate를 할 수 있도록 구현되어 있고, mobile에서도 사용가능함.
+   * `scatter`도 `RelativeLayout`처럼 relative coordinates를 사용 함.
+  
+  scatter 적용  
+  1. DraggableWidget이 Scatter를 상속하도록 함. (ex/05 - comicwidgets.py)
+  2. scatter가 event를 받을 수 있도록 `on_touch_down`에 `super.on_touch_down`를 추가 함.
+  3. scatter가 `pos` property에 대한 `on_pos` method를 지원하므로 `on_touch_move` 대신 사용.
+  4. scatter는 `rotation`과 `scale` property를 또한 지원하며, `on_rotation`, `on_scale` 사용.
+     * DraggableWidget의 rotation, scale이 group mode에서 동작할 수 있도록 GeneralOptions class에 해당 property를 추가 및 구현.  
+       * 여기서, 특정 DraggableWidget의 rotation, scale의 변화를 property로 간단히 GeneralOptions로 넘겨주고, GeneralOptions에서는 가지고 있는 child들의 property들을 바꿈으로 전체 적용을 하는 점에서, property의 장점을 확인.  
+       toolbox.py에서 `return DraggableWidget`를 하는 부분을 새삼 확인.
+  
+
+  
